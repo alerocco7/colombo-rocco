@@ -19,7 +19,13 @@ class ProfilePage extends StatelessWidget {
                   Navigator.pop(context);
                 }
               ),
-             
+
+              ElevatedButton(
+                child: Text('To Relation'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/relation/');
+                }
+              ),
             ]
         ),
       ),

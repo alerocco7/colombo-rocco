@@ -2,8 +2,8 @@ import 'package:colombo_rocco/screens/calendarpage.dart';
 import 'package:colombo_rocco/screens/homepage.dart';
 import 'package:colombo_rocco/screens/notepage.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
+import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:colombo_rocco/screens/login.dart';
 
 void main() {
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         '/profilepage/':(context) => ProfilePage(),
         '/notepage/': (context) => NotePage(),
         '/calendarpage/': (context) => CalendarPage(),
+        '/relation/' : (context) => RelationPage(),
       },
     );
   } //build
