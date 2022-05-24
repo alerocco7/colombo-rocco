@@ -1,4 +1,5 @@
 import 'package:colombo_rocco/screens/homepage.dart';
+import 'package:colombo_rocco/screens/notepage.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/login/': (context) => Login(),
         '/homepage/':(context) => HomePage(),
         '/profilepage/':(context) => ProfilePage(),
+        '/notepage/': (context) => NotePage(),
       },
     );
   } //build
