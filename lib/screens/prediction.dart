@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class RelationPage extends StatelessWidget {
+class PredictionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Relation Page')),
+      appBar: AppBar(title: Text('Prediction Page')),
       body: Center(
         child: ElevatedButton(
-          child: Text('To ProfilePage'),
+          child: Text('To CalendarPage'),
           onPressed: () {
             Navigator.pop(context);
           },

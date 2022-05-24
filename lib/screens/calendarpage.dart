@@ -18,6 +18,13 @@ class CalendarPage extends StatelessWidget {
                   Navigator.pop(context);
                 }
               ),
+
+              ElevatedButton(
+                child: Text('To Prediction'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/prediction/');
+                }
+              ),
             ]
         ),
       ),

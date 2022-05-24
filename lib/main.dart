@@ -1,6 +1,7 @@
 import 'package:colombo_rocco/screens/calendarpage.dart';
 import 'package:colombo_rocco/screens/homepage.dart';
 import 'package:colombo_rocco/screens/notepage.dart';
+import 'package:colombo_rocco/screens/prediction.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
 import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '/notepage/': (context) => NotePage(),
         '/calendarpage/': (context) => CalendarPage(),
         '/relation/' : (context) => RelationPage(),
+        '/prediction/' : (context) => PredictionPage(),
       },
     );
   } //build
