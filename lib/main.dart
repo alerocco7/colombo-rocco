@@ -1,3 +1,5 @@
+import 'package:colombo_rocco/screens/homepage.dart';
+import 'package:colombo_rocco/screens/profilepage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:colombo_rocco/screens/login.dart';
@@ -17,6 +19,8 @@ class MyApp extends StatelessWidget {
       //This maps names to the set of routes within the app
       routes: {
         '/login/': (context) => Login(),
+        '/homepage/':(context) => HomePage(),
+        '/profilepage/':(context) => ProfilePage(),
       },
     );
   } //build
