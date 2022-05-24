@@ -7,7 +7,6 @@ class NotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //this is not a meterial app but just a scaffold
       appBar: AppBar(title: Text('Note Page')),
       body: Center(
         child: ElevatedButton(

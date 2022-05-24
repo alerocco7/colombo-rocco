@@ -1,3 +1,4 @@
+import 'package:colombo_rocco/screens/calendarpage.dart';
 import 'package:colombo_rocco/screens/homepage.dart';
 import 'package:colombo_rocco/screens/notepage.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/homepage/':(context) => HomePage(),
         '/profilepage/':(context) => ProfilePage(),
         '/notepage/': (context) => NotePage(),
+        '/calendarpage/': (context) => CalendarPage(),
       },
     );
   } //build
