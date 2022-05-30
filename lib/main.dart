@@ -3,6 +3,7 @@ import 'package:colombo_rocco/screens/homepage.dart';
 import 'package:colombo_rocco/screens/notepage.dart';
 import 'package:colombo_rocco/screens/prediction.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
+import 'package:colombo_rocco/screens/register.dart';
 import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
 import 'package:colombo_rocco/screens/login.dart';
@@ -21,13 +22,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login/',
       //This maps names to the set of routes within the app
       routes: {
-        '/login/': (context) => Login(),
+        '/login/': (context) => MyLogin(),
         '/homepage/':(context) => HomePage(),
         '/profilepage/':(context) => ProfilePage(),
         '/notepage/': (context) => NotePage(),
         '/calendarpage/': (context) => CalendarPage(),
         '/relation/' : (context) => RelationPage(),
         '/prediction/' : (context) => PredictionPage(),
+        '/register/' : (context) => MyRegister(),
       },
     );
   } //build

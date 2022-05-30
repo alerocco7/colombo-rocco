@@ -1,4 +1,4 @@
-#Tue May 24 22:27:16 CEST 2022
+#Mon May 30 22:37:05 CEST 2022
 base.0=C\:\\Users\\asus\\OneDrive\\Desktop\\projectapp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

@@ -26,6 +26,7 @@ class ProfilePage extends StatelessWidget {
                   Navigator.pushNamed(context, '/relation/');
                 }
               ),
+              
             ]
         ),
       ),
