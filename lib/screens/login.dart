@@ -8,6 +8,23 @@ class MyLogin extends StatefulWidget {
 }
 
 class _MyLoginState extends State<MyLogin> {
+  late TextEditingController username;
+  late TextEditingController password;
+
+ @override
+  void initState() {
+    super.initState();
+    username = TextEditingController();
+    password = TextEditingController();
+  }
+
+ @override
+  void dispose() {
+    username.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +40,7 @@ class _MyLoginState extends State<MyLogin> {
             Container(
               padding: EdgeInsets.only(left: 35, top: 130),
               child: Text(
-                'Welcome\nBack',
+                'Welcome back',
                 style: TextStyle(color: Colors.white, fontSize: 33),
               ),
             ),
@@ -39,11 +56,12 @@ class _MyLoginState extends State<MyLogin> {
                       child: Column(
                         children: [
                           TextField(
+                            controller: username,
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                                 fillColor: Colors.grey.shade100,
                                 filled: true,
-                                hintText: "Email",
+                                hintText: "Username",
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 )),
@@ -52,6 +70,7 @@ class _MyLoginState extends State<MyLogin> {
                             height: 30,
                           ),
                           TextField(
+                            controller: password,
                             style: TextStyle(),
                             obscureText: true,
                             decoration: InputDecoration(
@@ -78,8 +97,16 @@ class _MyLoginState extends State<MyLogin> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {
-                                       Navigator.pushNamed(context, '/homepage/');
+                                    onPressed: () { 
+                                      if (username.text == 'user' && password.text == 'strong') {
+                                         Navigator.pushNamed(context, '/homepage/');
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                    ..removeCurrentSnackBar()
+                    ..showSnackBar(
+                        SnackBar(content: Text('Username o password errate')));
+                                      }
+                                      
                                     },
                                     icon: Icon(
                                       Icons.arrow_forward,
