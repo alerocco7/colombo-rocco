@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyLogin extends StatefulWidget {
   const MyLogin({Key? key}) : super(key: key);
@@ -11,18 +12,31 @@ class _MyLoginState extends State<MyLogin> {
   late TextEditingController username;
   late TextEditingController password;
 
- @override
+  @override
   void initState() {
     super.initState();
     username = TextEditingController();
     password = TextEditingController();
+    _checkLogin();
   }
 
- @override
-  void dispose() {
-    username.dispose();
-    password.dispose();
-    super.dispose();
+  void _checkLogin() async {
+    //Get the SharedPreference instance and check if the value of the 'username' filed is set or not
+    final sp = await SharedPreferences.getInstance();
+    if (sp.getString('username') != null) {
+      //If 'username is set, push the HomePage
+      _toHomePage(context);
+    } //if
+  } //_checkLogin
+
+  void _toHomePage(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/homepage/');
+  } //_toHomePage
+
+  void _login() async {
+    final sp = await SharedPreferences.getInstance();
+    sp.setString('username', username.text);
+    Navigator.pushNamed(context, '/homepage/');
   }
 
   @override
@@ -97,16 +111,17 @@ class _MyLoginState extends State<MyLogin> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () { 
-                                      if (username.text == 'user' && password.text == 'strong') {
-                                         Navigator.pushNamed(context, '/homepage/');
+                                    onPressed: () {
+                                      if (username.text == 'user' &&
+                                          password.text == 'strong') {
+                                        _login();
                                       } else {
                                         ScaffoldMessenger.of(context)
-                    ..removeCurrentSnackBar()
-                    ..showSnackBar(
-                        SnackBar(content: Text('Username o password errate')));
+                                          ..removeCurrentSnackBar()
+                                          ..showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Username o password errate')));
                                       }
-                                      
                                     },
                                     icon: Icon(
                                       Icons.arrow_forward,
