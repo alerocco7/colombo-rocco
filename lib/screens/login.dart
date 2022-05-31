@@ -78,7 +78,9 @@ class _MyLoginState extends State<MyLogin> {
                                 backgroundColor: Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                       Navigator.pushNamed(context, '/homepage/');
+                                    },
                                     icon: Icon(
                                       Icons.arrow_forward,
                                     )),
@@ -93,7 +95,7 @@ class _MyLoginState extends State<MyLogin> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'register');
+                                  Navigator.pushNamed(context, '/register/');
                                 },
                                 child: Text(
                                   'Sign Up',

@@ -144,7 +144,7 @@ class _MyRegisterState extends State<MyRegister> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, 'login');
+                                  Navigator.pushNamed(context, '/login/');
                                 },
                                 child: Text(
                                   'Sign In',
