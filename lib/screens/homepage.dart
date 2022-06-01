@@ -1,17 +1,17 @@
-import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '';
+import 'package:colombo_rocco/screens/login.dart';
 
 class HomePage extends StatelessWidget {
   static const route = '/homepage/';
   static const routename = 'Homepage';
-  void logout() async {
+  
+  void logout(BuildContext context) async {
     final sp = await SharedPreferences.getInstance();
     sp.remove('username');
-    Navigator.pop(); 
-    
+    Navigator.pop(context); 
+    Navigator.of(context).pushReplacementNamed('/login/');
   }
 
   @override
@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           icon: const Icon(Icons.logout),
           tooltip: 'Logout',
           onPressed: () {
-            logout();
+            logout(context);
           },
         ),
       ]),

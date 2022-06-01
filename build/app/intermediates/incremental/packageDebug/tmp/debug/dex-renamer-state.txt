@@ -1,4 +1,4 @@
-#Tue May 31 17:16:10 CEST 2022
+#Wed Jun 01 21:28:50 CEST 2022
 base.0=C\:\\Users\\aless\\Desktop\\colombo_rocco\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex
