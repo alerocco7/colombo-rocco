@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
   void logout(BuildContext context) async {
     final sp = await SharedPreferences.getInstance();
     sp.remove('username');
-    Navigator.pop(context); 
+    
     Navigator.of(context).pushReplacementNamed('/login/');
   }
 
