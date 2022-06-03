@@ -7,7 +7,7 @@ import 'package:colombo_rocco/screens/register.dart';
 import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
 import 'package:colombo_rocco/screens/login.dart';
-
+import '';
 void main() {
   runApp(const MyApp());
 } //main

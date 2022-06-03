@@ -8,12 +8,12 @@
         "source": "C:\\Users\\aless\\Desktop\\colombo_rocco\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\aless\\Desktop\\colombo_rocco\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\aless\\Desktop\\colombo_rocco\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
-    },
-    {
         "merged": "C:\\Users\\aless\\Desktop\\colombo_rocco\\build\\app\\intermediates\\res\\merged\\debug\\drawable_launch_background.xml.flat",
         "source": "C:\\Users\\aless\\Desktop\\colombo_rocco\\android\\app\\src\\main\\res\\drawable\\launch_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\aless\\Desktop\\colombo_rocco\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\aless\\Desktop\\colombo_rocco\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\aless\\Desktop\\colombo_rocco\\build\\app\\intermediates\\res\\merged\\debug\\drawable-v21_launch_background.xml.flat",
