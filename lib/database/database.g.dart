@@ -84,9 +84,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Activity` (`day` INTEGER PRIMARY KEY AUTOINCREMENT, `steps` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Activity` (`id` INTEGER NOT NULL, `day` INTEGER NOT NULL, `steps` INTEGER NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER PRIMARY KEY AUTOINCREMENT, `deep` INTEGER NOT NULL, `light` INTEGER NOT NULL, `rem` INTEGER NOT NULL, `wake` INTEGER NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER NOT NULL, `light` INTEGER NOT NULL, `rem` INTEGER NOT NULL, `wake` INTEGER NOT NULL, PRIMARY KEY (`day`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -111,14 +111,20 @@ class _$ActivityDao extends ActivityDao {
         _activityInsertionAdapter = InsertionAdapter(
             database,
             'Activity',
-            (Activity item) =>
-                <String, Object?>{'day': item.day, 'steps': item.steps}),
+            (Activity item) => <String, Object?>{
+                  'id': item.id,
+                  'day': _dateTimeConverter.encode(item.day),
+                  'steps': item.steps
+                }),
         _activityDeletionAdapter = DeletionAdapter(
             database,
             'Activity',
-            ['day'],
-            (Activity item) =>
-                <String, Object?>{'day': item.day, 'steps': item.steps});
+            ['id'],
+            (Activity item) => <String, Object?>{
+                  'id': item.id,
+                  'day': _dateTimeConverter.encode(item.day),
+                  'steps': item.steps
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -133,8 +139,8 @@ class _$ActivityDao extends ActivityDao {
   @override
   Future<List<Activity>> findAllSteps() async {
     return _queryAdapter.queryList('SELECT * FROM Activity',
-        mapper: (Map<String, Object?> row) =>
-            Activity(row['day'] as int?, row['steps'] as String));
+        mapper: (Map<String, Object?> row) => Activity(row['id'] as int,
+            _dateTimeConverter.decode(row['day'] as int), row['steps'] as int));
   }
 
   @override
@@ -155,7 +161,7 @@ class _$SleepDao extends SleepDao {
             database,
             'Sleep',
             (Sleep item) => <String, Object?>{
-                  'day': item.day,
+                  'day': _dateTimeConverter.encode(item.day),
                   'deep': item.deep,
                   'light': item.light,
                   'rem': item.rem,
@@ -166,7 +172,7 @@ class _$SleepDao extends SleepDao {
             'Sleep',
             ['day'],
             (Sleep item) => <String, Object?>{
-                  'day': item.day,
+                  'day': _dateTimeConverter.encode(item.day),
                   'deep': item.deep,
                   'light': item.light,
                   'rem': item.rem,
@@ -187,11 +193,23 @@ class _$SleepDao extends SleepDao {
   Future<List<Sleep>> findAllSleepstages() async {
     return _queryAdapter.queryList('SELECT * FROM Sleep',
         mapper: (Map<String, Object?> row) => Sleep(
-            row['day'] as int?,
+            _dateTimeConverter.decode(row['day'] as int),
             row['deep'] as int,
             row['light'] as int,
             row['rem'] as int,
             row['wake'] as int));
+  }
+
+  @override
+  Future<Sleep?> findSleepByday(DateTime day) async {
+    return _queryAdapter.query('SELECT * FROM Sleep WHERE day = ?1',
+        mapper: (Map<String, Object?> row) => Sleep(
+            _dateTimeConverter.decode(row['day'] as int),
+            row['deep'] as int,
+            row['light'] as int,
+            row['rem'] as int,
+            row['wake'] as int),
+        arguments: [_dateTimeConverter.encode(day)]);
   }
 
   @override
@@ -204,3 +222,6 @@ class _$SleepDao extends SleepDao {
     await _sleepDeletionAdapter.delete(stage);
   }
 }
+
+// ignore_for_file: unused_element
+final _dateTimeConverter = DateTimeConverter();

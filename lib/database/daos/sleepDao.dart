@@ -5,7 +5,6 @@ import 'package:floor/floor.dart';
 
 @dao
 abstract class SleepDao {
-
   //Query #1: SELECT -> this allows to obtain all the entries of the Sleep table
   @Query('SELECT * FROM Sleep')
   Future<List<Sleep>> findAllSleepstages();
@@ -14,8 +13,10 @@ abstract class SleepDao {
   @insert
   Future<void> insertSleepstages(Sleep stage);
 
+  @Query('SELECT * FROM Sleep WHERE day = :day')
+  Future<Sleep?> findSleepByday(DateTime day);
+
   //Query #3: DELETE -> this allows to delete a stage from the table
   @delete
   Future<void> deleteSleepstages(Sleep stage);
-
 }//SleepDao

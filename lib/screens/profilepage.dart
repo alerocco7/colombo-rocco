@@ -1,6 +1,10 @@
+import 'package:colombo_rocco/database/entities/sleep.dart';
+import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:fitbitter/fitbitter.dart';
 import 'package:colombo_rocco/utils/strings.dart';
+import 'package:colombo_rocco/database/TypeConverters/datetimeconverter.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
   static const route = '/profilepage/';
@@ -77,13 +81,43 @@ class ProfilePage extends StatelessWidget {
               //Fetch data
               final sleepData = await fitbitSleepDataManager
                   .fetch(FitbitSleepAPIURL.withUserIDAndDateRange(
-                startDate: DateTime.now().subtract(Duration(days: 7)),
+                startDate: DateTime.now().subtract(const Duration(days: 100)),
                 endDate: DateTime
-                    .now(), //if we want data from 1 week we are not in the right URL, we have to change it
+                    .now(), 
                 userID: userId,
               )) as List<FitbitSleepData>;
+              print(sleepData);
+              DateTime? data = DateTime.now();
+              int deepCount = 0;
+              int remCount = 0;
+              int wakeCount = 0;
+              int lightCount = 0;
+
+              for (var i = 0; i < sleepData.length - 1; i++) {
+                if (sleepData.elementAt(i).dateOfSleep == data) {
+                  if (sleepData.elementAt(i).level == 'deep') {
+                    deepCount = deepCount + 1;
+                  } else if (sleepData.elementAt(i).level == 'rem') {
+                    remCount = remCount + 1;
+                  } else if (sleepData.elementAt(i).level == 'wake') {
+                    wakeCount = wakeCount + 1;
+                  } else if (sleepData.elementAt(i).level == 'light') {
+                    lightCount = lightCount + 1;
+                  }
+                } else {
+                  Sleep dormi =
+                      Sleep(data!, deepCount, lightCount, remCount, wakeCount);
+                  await Provider.of<DatabaseRepository>(context, listen: false)
+                      .insertSleepStages(dormi);
+                  data = sleepData.elementAt(i).dateOfSleep;
+                  deepCount = 0;
+                  remCount = 0;
+                  wakeCount = 1;
+                  lightCount = 0;
+                }
+              }
             },
-            child: Text('Tap to download sleep data'),
+            child: Text('Tap to download 100 days sleep data'),
           ),
           ElevatedButton(
             onPressed: () async {
