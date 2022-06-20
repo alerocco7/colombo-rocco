@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: new ThemeData(scaffoldBackgroundColor: Color.fromRGBO(108, 109, 107, 1)),
       //This specifies the app entrypoint
       initialRoute: '/login/',
       //This maps names to the set of routes within the app
