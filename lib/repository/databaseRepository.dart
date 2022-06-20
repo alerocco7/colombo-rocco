@@ -19,15 +19,21 @@ class DatabaseRepository extends ChangeNotifier {
 
   //This method wraps the insertTodo() method of the DAO.
   //Then, it notifies the listeners that something changed.
-  Future<void> insertActivity(Activity activity) async {
-    await database.activityDao.insertActivity(activity);
+  Future<void> insertActivity(Activity calories) async {
+    await database.activityDao.insertActivity(calories);
     notifyListeners();
   } //insertTodo
 
   //This method wraps the deleteTodo() method of the DAO.
   //Then, it notifies the listeners that something changed.
-  Future<void> removeActivity(Activity activity) async {
-    await database.activityDao.deleteActivity(activity);
+  Future<void> removeActivity(Activity calories) async {
+    await database.activityDao.deleteActivity(calories);
+    notifyListeners();
+  } //removeTodo
+
+  
+  Future<void> deleteNotSleeping() async {
+    await database.sleepDao.deleteNotSleeping();
     notifyListeners();
   } //removeTodo
 
@@ -36,6 +42,12 @@ class DatabaseRepository extends ChangeNotifier {
     return results;
     notifyListeners();
   } //findAllTodos
+
+  Future<List<Sleep?>> findSleepByfirstday(DateTime day) async {
+    final results = await database.sleepDao.findSleepByfirstday(day);
+    return results;
+    notifyListeners();
+  }
 
   Future<void> insertSleepStages(Sleep sleep) async {
     await database.sleepDao.insertSleepstages(sleep);

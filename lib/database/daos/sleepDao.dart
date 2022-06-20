@@ -10,11 +10,20 @@ abstract class SleepDao {
   Future<List<Sleep>> findAllSleepstages();
 
   //Query #2: INSERT -> this allows to add a stage in the table
-  @insert
+  @Insert(onConflict: OnConflictStrategy.ignore)
   Future<void> insertSleepstages(Sleep stage);
+
+
 
   @Query('SELECT * FROM Sleep WHERE day = :day')
   Future<Sleep?> findSleepByday(DateTime day);
+
+  @Query('SELECT * FROM Sleep WHERE day > :day')
+  Future<List<Sleep?>> findSleepByfirstday(DateTime day);
+
+  @Query('DELETE FROM Sleep WHERE deep=0 AND light =0 AND rem=0')
+  Future<void> deleteNotSleeping();
+
 
   //Query #3: DELETE -> this allows to delete a stage from the table
   @delete

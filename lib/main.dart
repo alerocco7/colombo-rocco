@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         '/homepage/': (context) => HomePage(),
         '/profilepage/': (context) => ProfilePage(),
         '/notepage/': (context) => NotePage(),
-        '/calendarpage/': (context) => CalendarPage(),
+        '/calendarpage/': (context) => calendarPage(),
         '/relation/': (context) => RelationPage(),
         '/prediction/': (context) => PredictionPage(),
         '/register/': (context) => MyRegister(),

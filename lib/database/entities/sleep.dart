@@ -8,11 +8,10 @@ class Sleep {
   @PrimaryKey()
   final DateTime day;
 
-  final int deep;
-  final int light;
-  final int rem;
-  final int wake;
-
+  final int? deep;
+  final int? light;
+  final int? rem;
+  final int? wake;
   //Default constructor
   Sleep(this.day, this.deep, this.light, this.rem, this.wake);
 }//Sleep

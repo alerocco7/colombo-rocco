@@ -84,9 +84,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Activity` (`id` INTEGER NOT NULL, `day` INTEGER NOT NULL, `steps` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Activity` (`day` INTEGER NOT NULL, `calories` REAL NOT NULL, PRIMARY KEY (`day`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER NOT NULL, `light` INTEGER NOT NULL, `rem` INTEGER NOT NULL, `wake` INTEGER NOT NULL, PRIMARY KEY (`day`))');
+            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER, `light` INTEGER, `rem` INTEGER, `wake` INTEGER, PRIMARY KEY (`day`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -112,18 +112,16 @@ class _$ActivityDao extends ActivityDao {
             database,
             'Activity',
             (Activity item) => <String, Object?>{
-                  'id': item.id,
                   'day': _dateTimeConverter.encode(item.day),
-                  'steps': item.steps
+                  'calories': item.calories
                 }),
         _activityDeletionAdapter = DeletionAdapter(
             database,
             'Activity',
-            ['id'],
+            ['day'],
             (Activity item) => <String, Object?>{
-                  'id': item.id,
                   'day': _dateTimeConverter.encode(item.day),
-                  'steps': item.steps
+                  'calories': item.calories
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -139,18 +137,19 @@ class _$ActivityDao extends ActivityDao {
   @override
   Future<List<Activity>> findAllSteps() async {
     return _queryAdapter.queryList('SELECT * FROM Activity',
-        mapper: (Map<String, Object?> row) => Activity(row['id'] as int,
-            _dateTimeConverter.decode(row['day'] as int), row['steps'] as int));
+        mapper: (Map<String, Object?> row) => Activity(
+            _dateTimeConverter.decode(row['day'] as int),
+            row['calories'] as double));
   }
 
   @override
-  Future<void> insertActivity(Activity step) async {
-    await _activityInsertionAdapter.insert(step, OnConflictStrategy.abort);
+  Future<void> insertActivity(Activity calories) async {
+    await _activityInsertionAdapter.insert(calories, OnConflictStrategy.ignore);
   }
 
   @override
-  Future<void> deleteActivity(Activity step) async {
-    await _activityDeletionAdapter.delete(step);
+  Future<void> deleteActivity(Activity calories) async {
+    await _activityDeletionAdapter.delete(calories);
   }
 }
 
@@ -194,10 +193,10 @@ class _$SleepDao extends SleepDao {
     return _queryAdapter.queryList('SELECT * FROM Sleep',
         mapper: (Map<String, Object?> row) => Sleep(
             _dateTimeConverter.decode(row['day'] as int),
-            row['deep'] as int,
-            row['light'] as int,
-            row['rem'] as int,
-            row['wake'] as int));
+            row['deep'] as int?,
+            row['light'] as int?,
+            row['rem'] as int?,
+            row['wake'] as int?));
   }
 
   @override
@@ -205,16 +204,34 @@ class _$SleepDao extends SleepDao {
     return _queryAdapter.query('SELECT * FROM Sleep WHERE day = ?1',
         mapper: (Map<String, Object?> row) => Sleep(
             _dateTimeConverter.decode(row['day'] as int),
-            row['deep'] as int,
-            row['light'] as int,
-            row['rem'] as int,
-            row['wake'] as int),
+            row['deep'] as int?,
+            row['light'] as int?,
+            row['rem'] as int?,
+            row['wake'] as int?),
         arguments: [_dateTimeConverter.encode(day)]);
   }
 
   @override
+  Future<List<Sleep?>> findSleepByfirstday(DateTime day) async {
+    return _queryAdapter.queryList('SELECT * FROM Sleep WHERE day > ?1',
+        mapper: (Map<String, Object?> row) => Sleep(
+            _dateTimeConverter.decode(row['day'] as int),
+            row['deep'] as int?,
+            row['light'] as int?,
+            row['rem'] as int?,
+            row['wake'] as int?),
+        arguments: [_dateTimeConverter.encode(day)]);
+  }
+
+  @override
+  Future<void> deleteNotSleeping() async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM Sleep WHERE deep=0 AND light =0 AND rem=0');
+  }
+
+  @override
   Future<void> insertSleepstages(Sleep stage) async {
-    await _sleepInsertionAdapter.insert(stage, OnConflictStrategy.abort);
+    await _sleepInsertionAdapter.insert(stage, OnConflictStrategy.ignore);
   }
 
   @override

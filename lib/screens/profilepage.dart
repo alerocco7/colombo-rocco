@@ -1,9 +1,9 @@
+import 'package:colombo_rocco/database/entities/activity.dart';
 import 'package:colombo_rocco/database/entities/sleep.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:fitbitter/fitbitter.dart';
 import 'package:colombo_rocco/utils/strings.dart';
-import 'package:colombo_rocco/database/TypeConverters/datetimeconverter.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -42,24 +42,35 @@ class ProfilePage extends StatelessWidget {
                   FitbitActivityTimeseriesDataManager(
                 clientID: Strings.fitbitClientID,
                 clientSecret: Strings.fitbitClientSecret,
-                type: 'steps',
+                type: 'calories',
               );
 
               //Fetch data
-              final stepsData = await fitbitActivityTimeseriesDataManager
-                  .fetch(FitbitActivityTimeseriesAPIURL.dayWithResource(
-                date: DateTime.now().subtract(Duration(days: 1)),
+              final caloriesData = await fitbitActivityTimeseriesDataManager
+                  .fetch(FitbitActivityTimeseriesAPIURL.dateRangeWithResource(
+                startDate: DateTime.now().subtract(const Duration(days: 100)),
+                endDate: DateTime.now(),
                 userID: userId,
                 resource: fitbitActivityTimeseriesDataManager.type,
               )) as List<FitbitActivityTimeseriesData>;
+              print(caloriesData);
 
+              for (var i = 0; i < caloriesData.length - 1; i++) {
+                DateTime? data = caloriesData.elementAt(i).dateOfMonitoring;
+                double? calorie = caloriesData.elementAt(i).value;
+               
+                print(Activity(data!, calorie!).calories.toString());
+                print(Activity(data, calorie).day.toString());
+                await Provider.of<DatabaseRepository>(context, listen: false)
+                    .insertActivity(Activity(data, calorie));
+              }
               // Use them as you want
               final snackBar = SnackBar(
                   content: Text(
-                      'Yesterday you walked ${stepsData[0].value} steps!'));
+                      'Yesterday you spent ${caloriesData[0].value} calories!'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-            child: Text('Tap to download steps data'),
+            child: Text('Tap to download calories data'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -82,8 +93,7 @@ class ProfilePage extends StatelessWidget {
               final sleepData = await fitbitSleepDataManager
                   .fetch(FitbitSleepAPIURL.withUserIDAndDateRange(
                 startDate: DateTime.now().subtract(const Duration(days: 100)),
-                endDate: DateTime
-                    .now(), 
+                endDate: DateTime.now(),
                 userID: userId,
               )) as List<FitbitSleepData>;
               print(sleepData);
@@ -115,6 +125,8 @@ class ProfilePage extends StatelessWidget {
                   wakeCount = 1;
                   lightCount = 0;
                 }
+                await Provider.of<DatabaseRepository>(context, listen: false)
+                    .deleteNotSleeping();
               }
             },
             child: Text('Tap to download 100 days sleep data'),

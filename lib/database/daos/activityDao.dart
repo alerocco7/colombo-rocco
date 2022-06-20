@@ -11,11 +11,11 @@ abstract class ActivityDao {
   Future<List<Activity>> findAllSteps();
 
   //Query #2: INSERT -> this allows to add a step in the table
-  @insert
-  Future<void> insertActivity(Activity step);
+  @Insert(onConflict: OnConflictStrategy.ignore)
+  Future<void> insertActivity(Activity calories);
 
   //Query #3: DELETE -> this allows to delete a step from the table
   @delete
-  Future<void> deleteActivity(Activity step);
+  Future<void> deleteActivity(Activity calories);
 
 }//ActivityDao
