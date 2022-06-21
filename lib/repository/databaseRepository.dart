@@ -49,6 +49,13 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<List<Activity?>> findCaloriesByfirstday(DateTime day) async {
+    final results = await database.activityDao.findCaloriesByfirstday(day);
+    return results;
+    notifyListeners();
+  }
+
+  
   Future<void> insertSleepStages(Sleep sleep) async {
     await database.sleepDao.insertSleepstages(sleep);
     notifyListeners();
@@ -61,6 +68,12 @@ class DatabaseRepository extends ChangeNotifier {
 
   Future<Sleep?> findSleepByday(DateTime day) async {
     final result = await database.sleepDao.findSleepByday(day);
+    return result;
+    notifyListeners();
+  }
+
+  Future<DateTime?> minday() async {
+    final result = await database.sleepDao.minday();
     return result;
     notifyListeners();
   }
