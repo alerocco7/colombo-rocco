@@ -24,6 +24,12 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   } //insertTodo
 
+  Future<List<double?>?> findCalorieByfirstday(DateTime day) async {
+    final results = await database.activityDao.findCalorieByfirstday(day);
+    return results;
+    notifyListeners();
+  }
+
   //This method wraps the deleteTodo() method of the DAO.
   //Then, it notifies the listeners that something changed.
   Future<void> removeActivity(Activity calories) async {
@@ -31,7 +37,6 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   } //removeTodo
 
-  
   Future<void> deleteNotSleeping() async {
     await database.sleepDao.deleteNotSleeping();
     notifyListeners();
@@ -55,7 +60,6 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  
   Future<void> insertSleepStages(Sleep sleep) async {
     await database.sleepDao.insertSleepstages(sleep);
     notifyListeners();
@@ -66,15 +70,17 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   } //removeTodo
 
-  Future<Sleep?> findSleepByday(DateTime day) async {
-    final result = await database.sleepDao.findSleepByday(day);
+  Future<Sleep?> findSleepByday(DateTime day) {
+    final giorno = day.day;
+    final mese = day.month;
+    final anno = day.year;
+    final data = DateTime(anno, mese, giorno);
+    final result = database.sleepDao.findSleepByday(data);
     return result;
-    notifyListeners();
   }
 
   Future<DateTime?> minday() async {
     final result = await database.sleepDao.minday();
     return result;
-    notifyListeners();
   }
 } //DatabaseRepository

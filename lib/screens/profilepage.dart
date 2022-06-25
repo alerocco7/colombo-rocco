@@ -90,7 +90,7 @@ class ProfilePage extends StatelessWidget {
               );
 
               //Fetch data
-              final sleepData = await fitbitSleepDataManager
+              final sleepData =  await fitbitSleepDataManager //platform exception
                   .fetch(FitbitSleepAPIURL.withUserIDAndDateRange(
                 startDate: DateTime.now().subtract(const Duration(days: 100)),
                 endDate: DateTime.now(),
@@ -125,9 +125,10 @@ class ProfilePage extends StatelessWidget {
                   wakeCount = 1;
                   lightCount = 0;
                 }
-                await Provider.of<DatabaseRepository>(context, listen: false)
+
+              } 
+                    await Provider.of<DatabaseRepository>(context, listen: false)
                     .deleteNotSleeping();
-              }
             },
             child: Text('Tap to download 100 days sleep data'),
           ),

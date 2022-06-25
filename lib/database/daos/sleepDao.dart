@@ -13,10 +13,10 @@ abstract class SleepDao {
   @Insert(onConflict: OnConflictStrategy.ignore)
   Future<void> insertSleepstages(Sleep stage);
 
-  @Query('SELECT MIN day FROM Sleep')
+  @Query('SELECT MIN(day) FROM Sleep as min_day')
   Future<DateTime?> minday();
 
-  @Query('SELECT * FROM Sleep WHERE day = :day')
+  @Query('SELECT * FROM sleep WHERE day = :day')
   Future<Sleep?> findSleepByday(DateTime day);
 
   @Query('SELECT * FROM Sleep WHERE day > :day')

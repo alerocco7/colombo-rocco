@@ -1,86 +1,102 @@
+import 'package:colombo_rocco/database/entities/sleep.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 
+//This is the class that implement the page to be used to edit existing meals and add new meals.
+//This is a StatefulWidget since it needs to rebuild when the form fields change.
 class calendarPage extends StatefulWidget {
-  const calendarPage({Key? key, this.restorationId}) : super(key: key);
+  //We are passing the Meal to be edited. If it is null, the business logic will know that we are adding a new
+  //Meal instead.
 
-  final String? restorationId;
+  //MealPage constructor
+  calendarPage({Key? key}) : super(key: key);
+
+  static const route = '/calendarpage/';
+  static const routeDisplayName = 'Calendar Page';
 
   @override
-  State<calendarPage> createState() => _MyStatefulWidgetState();
+  State<calendarPage> createState() => _calendarPageState();
 }
 
-/// RestorationProperty objects can be used because of RestorationMixin.
-class _MyStatefulWidgetState extends State<calendarPage> with RestorationMixin {
-  // In this example, the restoration ID for the mixin is passed in through
-  // the [StatefulWidget]'s constructor.
-  @override
-  String? get restorationId => widget.restorationId;
+class _calendarPageState extends State<calendarPage> {
+  DateTime _selectedDate = DateTime.now().subtract(Duration(days: 1));
 
-  final RestorableDateTime _selectedDate =
-      RestorableDateTime(DateTime(2021, 7, 25));
-  late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
-      RestorableRouteFuture<DateTime?>(
-    onComplete: _selectDate,
-    onPresent: (NavigatorState navigator, Object? arguments) {
-      return navigator.restorablePush(
-        _datePickerRoute,
-        arguments: _selectedDate.value.millisecondsSinceEpoch,
-      );
-    },
-  );
-
-  static Route<DateTime> _datePickerRoute(
-    BuildContext context,
-    Object? arguments,
-  ) {
-    return DialogRoute<DateTime>(
-      context: context,
-      builder: (BuildContext context) {
-        return DatePickerDialog(
-          restorationId: 'date_picker_dialog',
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-          firstDate: minday,
-          lastDate: DateTime.now(),
-        );
-      },
-    );
-  }
+  Sleep? prova = Sleep(DateTime.now(), 0, 0, 0, 0);
 
   @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_selectedDate, 'selected_date');
-    registerForRestoration(
-        _restorableDatePickerRouteFuture, 'date_picker_route_future');
-  }
+  void initState() {
+    
+    _selectedDate = DateTime.now();
+    Sleep? prova = Sleep(DateTime.now(), 0, 0, 0, 0);
 
-  void _selectDate(DateTime? newSelectedDate) {
-    if (newSelectedDate != null) {
-      setState(() {
-        _selectedDate.value = newSelectedDate;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
-        ));
-      });
-    }
-  }
+
+    super.initState();
+  } 
 
   @override
   Widget build(BuildContext context) {
+    //Print the route display name for debugging
+    print('${calendarPage.routeDisplayName} built');
+
+    //The page is composed of a form. An action in the AppBar is used to validate and save the information provided by the user.
+    //A FAB is showed to provide the "delete" functinality. It is showed only if the meal already exists.
     return Scaffold(
-      body: Center(
-        child: OutlinedButton(
+      appBar: AppBar(title: Text(calendarPage.routeDisplayName)),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Consumer<DatabaseRepository>(builder: (context, dbr, child) {
+          //The logic is to query the DB for the entire list of Todo using dbr.findAllTodos()
+          //and then populate the ListView accordingly.
+          //We need to use a FutureBuilder since the result of dbr.findAllTodos() is a Future.
+          return FutureBuilder(
+              initialData: prova,
+              future: dbr.findSleepByday(_selectedDate),
+              builder: (context, snapshot) {
+                final data = snapshot.data as Sleep?;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('${data!.day}'),
+                    Text('${data.deep}'),
+                  ],
+                );
+              });
+        }),
+
+        ElevatedButton(
           onPressed: () async {
-            _restorableDatePickerRouteFuture.present();
+            _selectDate(context);
+            Sleep? prova = await
+                Provider.of<DatabaseRepository>(context, listen: false)
+                    .findSleepByday(_selectedDate);
           },
-          child: const Text('Open Date Picker'),
-        ),
-      ),
+          child: const Text('SELECT THE DAY'),
+        ) //else
+      ]
+          //   child: ElevatedButton(
+          //                  onPressed: () {
+          //                 _selectDate(context);
+          //             },
+          //              child: const Text('SELECT THE DAY'),
+          //           )
+          ),
     );
   }
-}
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: _selectedDate,
+        firstDate: DateTime(2010),
+        lastDate: DateTime(2101));
+
+    if (picked != null && picked != _selectedDate)
+      setState(() {
+        _selectedDate = picked;
+      });
+      //Here, I'm using setState to update the _selectedDate field and rebuild the UI.
+
+     
+  } }

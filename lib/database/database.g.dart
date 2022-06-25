@@ -152,6 +152,13 @@ class _$ActivityDao extends ActivityDao {
   }
 
   @override
+  Future<List<double?>?> findCalorieByfirstday(DateTime day) async {
+    await _queryAdapter.queryNoReturn(
+        'SELECT calories FROM Activity WHERE day > ?1',
+        arguments: [_dateTimeConverter.encode(day)]);
+  }
+
+  @override
   Future<void> insertActivity(Activity calories) async {
     await _activityInsertionAdapter.insert(calories, OnConflictStrategy.ignore);
   }
@@ -210,12 +217,12 @@ class _$SleepDao extends SleepDao {
 
   @override
   Future<DateTime?> minday() async {
-    await _queryAdapter.queryNoReturn('SELECT MIN day FROM Sleep');
+    await _queryAdapter.queryNoReturn('SELECT MIN(day) FROM Sleep as min_day');
   }
 
   @override
   Future<Sleep?> findSleepByday(DateTime day) async {
-    return _queryAdapter.query('SELECT * FROM Sleep WHERE day = ?1',
+    return _queryAdapter.query('SELECT * FROM sleep WHERE day = ?1',
         mapper: (Map<String, Object?> row) => Sleep(
             _dateTimeConverter.decode(row['day'] as int),
             row['deep'] as int?,

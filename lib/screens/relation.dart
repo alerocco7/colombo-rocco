@@ -41,7 +41,17 @@ class RelationPage extends StatelessWidget {
                     print(prova.elementAt(i)!.light.toString());
                     print(prova.elementAt(i)!.rem.toString());
                   }
+                  
                 }),
+                ElevatedButton(
+                child: Text('prova2'),
+                onPressed: () async {
+                  DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().subtract(Duration(days: 2)).day);
+                  Sleep? prova = await Provider.of<DatabaseRepository>(
+                          context,
+                          listen: false)
+                      .findSleepByday(oggi) ;
+                      print(prova!.deep.toString());}),
             ElevatedButton(
                 child: Text('calorie'),
                 onPressed: () async {
