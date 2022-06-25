@@ -16,6 +16,9 @@ abstract class ActivityDao {
   @Query('SELECT calories FROM Activity WHERE day > :day')
   Future<List<double?>?> findCalorieByfirstday(DateTime day);
 
+  @Query('SELECT * FROM activity WHERE day = :day')
+  Future<Activity?> findActivityByday(DateTime day);
+
   //Query #2: INSERT -> this allows to add a step in the table
   @Insert(onConflict: OnConflictStrategy.ignore)
   Future<void> insertActivity(Activity calories);

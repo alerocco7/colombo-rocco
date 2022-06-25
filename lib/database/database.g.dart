@@ -159,6 +159,15 @@ class _$ActivityDao extends ActivityDao {
   }
 
   @override
+  Future<Activity?> findActivityByday(DateTime day) async {
+    return _queryAdapter.query('SELECT * FROM activity WHERE day = ?1',
+        mapper: (Map<String, Object?> row) => Activity(
+            _dateTimeConverter.decode(row['day'] as int),
+            row['calories'] as double),
+        arguments: [_dateTimeConverter.encode(day)]);
+  }
+
+  @override
   Future<void> insertActivity(Activity calories) async {
     await _activityInsertionAdapter.insert(calories, OnConflictStrategy.ignore);
   }

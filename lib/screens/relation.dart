@@ -63,7 +63,7 @@ class RelationPage extends StatelessWidget {
                           .findCaloriesByfirstday(day);
                   for (var i = 0; i < calorie.length; i++) {
                     print(calorie.elementAt(i)!.day.toString());
-                    print(calorie.elementAt(i)!.calories.toString());
+                    print(calorie.elementAt(i)!.calories);
                   }
                 }),
           ]),

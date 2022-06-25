@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget {
               for (var i = 0; i < caloriesData.length - 1; i++) {
                 DateTime? data = caloriesData.elementAt(i).dateOfMonitoring;
                 double? calorie = caloriesData.elementAt(i).value;
-               
+
                 print(Activity(data!, calorie!).calories.toString());
                 print(Activity(data, calorie).day.toString());
                 await Provider.of<DatabaseRepository>(context, listen: false)
@@ -90,8 +90,9 @@ class ProfilePage extends StatelessWidget {
               );
 
               //Fetch data
-              final sleepData =  await fitbitSleepDataManager //platform exception
-                  .fetch(FitbitSleepAPIURL.withUserIDAndDateRange(
+              final sleepData =
+                  await fitbitSleepDataManager //platform exception
+                      .fetch(FitbitSleepAPIURL.withUserIDAndDateRange(
                 startDate: DateTime.now().subtract(const Duration(days: 100)),
                 endDate: DateTime.now(),
                 userID: userId,
@@ -125,10 +126,9 @@ class ProfilePage extends StatelessWidget {
                   wakeCount = 1;
                   lightCount = 0;
                 }
-
-              } 
-                    await Provider.of<DatabaseRepository>(context, listen: false)
-                    .deleteNotSleeping();
+              }
+              await Provider.of<DatabaseRepository>(context, listen: false)
+                  .deleteNotSleeping();
             },
             child: Text('Tap to download 100 days sleep data'),
           ),
@@ -181,6 +181,34 @@ class ProfilePage extends StatelessWidget {
             },
             child: Text('Tap to download today sleep data'),
           ),
+          ElevatedButton(
+              onPressed: () async {
+                // Authorize the app
+                String? userId = await FitbitConnector.authorize(
+                    context: context,
+                    clientID: Strings.fitbitClientID,
+                    clientSecret: Strings.fitbitClientSecret,
+                    redirectUri: Strings.fitbitRedirectUri,
+                    callbackUrlScheme: Strings.fitbitCallbackScheme);
+
+                //Instantiate a proper data manager
+                FitbitActivityDataManager fitbitActivityDataManager =
+                    FitbitActivityDataManager(
+                  clientID: Strings.fitbitClientID,
+                  clientSecret: Strings.fitbitClientSecret,
+                );
+
+                //Fetch data
+                final activitytoday = await fitbitActivityDataManager
+                    .fetch(FitbitActivityAPIURL.day(
+                  date: DateTime.now(),
+                  userID: userId,
+                )) as List<FitbitActivityData>;
+                for (var i = 0; i < activitytoday.length; i++) {
+                  print('${activitytoday.elementAt(i)}');
+                }
+              },
+              child: Text('Tap to download today activity data')),
           ElevatedButton(
             onPressed: () async {
               await FitbitConnector.unauthorize(

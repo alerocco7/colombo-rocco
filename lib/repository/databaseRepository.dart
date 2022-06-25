@@ -30,6 +30,7 @@ class DatabaseRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+
   //This method wraps the deleteTodo() method of the DAO.
   //Then, it notifies the listeners that something changed.
   Future<void> removeActivity(Activity calories) async {
@@ -76,6 +77,15 @@ class DatabaseRepository extends ChangeNotifier {
     final anno = day.year;
     final data = DateTime(anno, mese, giorno);
     final result = database.sleepDao.findSleepByday(data);
+    return result;
+  }
+
+  Future<Activity?> findActivityByday(DateTime day) {
+    final giorno = day.day;
+    final mese = day.month;
+    final anno = day.year;
+    final data = DateTime(anno, mese, giorno);
+    final result = database.activityDao.findActivityByday(data);
     return result;
   }
 
