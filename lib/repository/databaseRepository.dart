@@ -66,10 +66,15 @@ class DatabaseRepository extends ChangeNotifier {
     final anno = sleep.day.year;
     final data = DateTime(anno, mese, giorno);
     final Sleep sleepCorrectDAta =
-        Sleep(data, sleep.deep, sleep.light, sleep.rem, sleep.wake);
+        Sleep(data, sleep.deep, sleep.light, sleep.rem, sleep.wake, sleep.caloriesDaybefore);
     await database.sleepDao.insertSleepstages(sleepCorrectDAta);
     notifyListeners();
   } //insertTodo
+ 
+  Future<void> insertSleepList(List<Sleep> lista) async {
+   await database.sleepDao.insertSleepList(lista);
+   notifyListeners();
+  }
 
   Future<void> removeSleepStages(Sleep sleep) async {
     await database.sleepDao.deleteSleepstages(sleep);
@@ -94,8 +99,5 @@ class DatabaseRepository extends ChangeNotifier {
     return result;
   }
 
-  Future<DateTime?> minday() async {
-    final result = await database.sleepDao.minday();
-    return result;
-  }
+ 
 } //DatabaseRepository

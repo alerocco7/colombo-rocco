@@ -10,11 +10,11 @@ abstract class SleepDao {
   Future<List<Sleep>> findAllSleepstages();
 
   //Query #2: INSERT -> this allows to add a stage in the table
-  @Insert(onConflict: OnConflictStrategy.ignore)
+  @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertSleepstages(Sleep stage);
 
-  @Query('SELECT MIN(day) FROM Sleep as min_day')
-  Future<DateTime?> minday();
+  @Insert(onConflict: OnConflictStrategy.ignore)
+  Future<void> insertSleepList(List<Sleep> lista);
 
   @Query('SELECT * FROM sleep WHERE day = :day')
   Future<Sleep?> findSleepByday(DateTime day);

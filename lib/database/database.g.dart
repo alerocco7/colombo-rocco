@@ -86,7 +86,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Activity` (`day` INTEGER NOT NULL, `calories` REAL NOT NULL, PRIMARY KEY (`day`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER, `light` INTEGER, `rem` INTEGER, `wake` INTEGER, PRIMARY KEY (`day`))');
+            'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER, `light` INTEGER, `rem` INTEGER, `wake` INTEGER, `caloriesDaybefore` REAL, PRIMARY KEY (`day`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -189,7 +189,8 @@ class _$SleepDao extends SleepDao {
                   'deep': item.deep,
                   'light': item.light,
                   'rem': item.rem,
-                  'wake': item.wake
+                  'wake': item.wake,
+                  'caloriesDaybefore': item.caloriesDaybefore
                 }),
         _sleepDeletionAdapter = DeletionAdapter(
             database,
@@ -200,7 +201,8 @@ class _$SleepDao extends SleepDao {
                   'deep': item.deep,
                   'light': item.light,
                   'rem': item.rem,
-                  'wake': item.wake
+                  'wake': item.wake,
+                  'caloriesDaybefore': item.caloriesDaybefore
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -221,12 +223,8 @@ class _$SleepDao extends SleepDao {
             row['deep'] as int?,
             row['light'] as int?,
             row['rem'] as int?,
-            row['wake'] as int?));
-  }
-
-  @override
-  Future<DateTime?> minday() async {
-    await _queryAdapter.queryNoReturn('SELECT MIN(day) FROM Sleep as min_day');
+            row['wake'] as int?,
+            row['caloriesDaybefore'] as double?));
   }
 
   @override
@@ -237,7 +235,8 @@ class _$SleepDao extends SleepDao {
             row['deep'] as int?,
             row['light'] as int?,
             row['rem'] as int?,
-            row['wake'] as int?),
+            row['wake'] as int?,
+            row['caloriesDaybefore'] as double?),
         arguments: [_dateTimeConverter.encode(day)]);
   }
 
@@ -249,7 +248,8 @@ class _$SleepDao extends SleepDao {
             row['deep'] as int?,
             row['light'] as int?,
             row['rem'] as int?,
-            row['wake'] as int?),
+            row['wake'] as int?,
+            row['caloriesDaybefore'] as double?),
         arguments: [_dateTimeConverter.encode(day)]);
   }
 
@@ -261,7 +261,12 @@ class _$SleepDao extends SleepDao {
 
   @override
   Future<void> insertSleepstages(Sleep stage) async {
-    await _sleepInsertionAdapter.insert(stage, OnConflictStrategy.ignore);
+    await _sleepInsertionAdapter.insert(stage, OnConflictStrategy.replace);
+  }
+
+  @override
+  Future<void> insertSleepList(List<Sleep> lista) async {
+    await _sleepInsertionAdapter.insertList(lista, OnConflictStrategy.ignore);
   }
 
   @override

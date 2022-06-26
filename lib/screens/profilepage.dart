@@ -72,7 +72,7 @@ class ProfilePage extends StatelessWidget {
             },
             child: const Text('Tap to download calories data'),
           ),
-          ElevatedButton(
+         /* ElevatedButton(
             onPressed: () async {
               // Authorize the app
               String? userId = await FitbitConnector.authorize(
@@ -131,7 +131,7 @@ class ProfilePage extends StatelessWidget {
                   .deleteNotSleeping();
             },
             child: const Text('Tap to download 100 days sleep data'),
-          ),
+          ), */
           ElevatedButton(
             onPressed: () async {
               // Authorize the app
