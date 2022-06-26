@@ -28,7 +28,7 @@ Future<void> main() async {
   //That instance will be then shared through the platform and will be unique.
   runApp(ChangeNotifierProvider<DatabaseRepository>(
     create: (context) => databaseRepository,
-    child: MyApp(),
+    child: const MyApp(),
   ));
 } //main
 
@@ -42,14 +42,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/login/',
       //This maps names to the set of routes within the app
       routes: {
-        '/login/': (context) => MyLogin(),
+        '/login/': (context) => const MyLogin(),
         '/homepage/': (context) => HomePage(),
         '/profilepage/': (context) => ProfilePage(),
         '/notepage/': (context) => NotePage(),
-        '/calendarpage/': (context) => calendarPage(),
+        '/calendarpage/': (context) => const calendarPage(),
         '/relation/': (context) => RelationPage(),
         '/prediction/': (context) => PredictionPage(),
-        '/register/': (context) => MyRegister(),
+        '/register/': (context) => const MyRegister(),
       },
     );
   } //build

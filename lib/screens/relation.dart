@@ -8,17 +8,17 @@ class RelationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Relation Page')),
+        appBar: AppBar(title: const Text('Relation Page')),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ElevatedButton(
-              child: Text('To ProfilePage'),
+              child: const Text('To ProfilePage'),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             ElevatedButton(
-                child: Text('prova'),
+                child: const Text('prova'),
                 onPressed: () async {
                   DateTime day =
                       DateTime.now().subtract(const Duration(days: 30));
@@ -44,16 +44,16 @@ class RelationPage extends StatelessWidget {
                   
                 }),
                 ElevatedButton(
-                child: Text('prova2'),
+                child: const Text('prova2'),
                 onPressed: () async {
-                  DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().subtract(Duration(days: 2)).day);
+                  DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().subtract(const Duration(days: 2)).day);
                   Sleep? prova = await Provider.of<DatabaseRepository>(
                           context,
                           listen: false)
                       .findSleepByday(oggi) ;
                       print(prova!.deep.toString());}),
             ElevatedButton(
-                child: Text('calorie'),
+                child: const Text('calorie'),
                 onPressed: () async {
                   DateTime day =
                       DateTime.now().subtract(const Duration(days: 30));

@@ -13,16 +13,16 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile Page')),
+      appBar: AppBar(title: const Text('Profile Page')),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
-              child: Text('To Homepage'),
+              child: const Text('To Homepage'),
               onPressed: () {
                 Navigator.pop(context);
               }),
           ElevatedButton(
-              child: Text('To Relation'),
+              child: const Text('To Relation'),
               onPressed: () {
                 Navigator.pushNamed(context, '/relation/');
               }),
@@ -70,7 +70,7 @@ class ProfilePage extends StatelessWidget {
                       'Yesterday you spent ${caloriesData[0].value} calories!'));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
-            child: Text('Tap to download calories data'),
+            child: const Text('Tap to download calories data'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -130,7 +130,7 @@ class ProfilePage extends StatelessWidget {
               await Provider.of<DatabaseRepository>(context, listen: false)
                   .deleteNotSleeping();
             },
-            child: Text('Tap to download 100 days sleep data'),
+            child: const Text('Tap to download 100 days sleep data'),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -179,7 +179,7 @@ class ProfilePage extends StatelessWidget {
               print(
                   'Stanotte hai speso $remSecondi secondi in fase rem, $remMinuti minuti, $remOre ore');
             },
-            child: Text('Tap to download today sleep data'),
+            child: const Text('Tap to download today sleep data'),
           ),
           ElevatedButton(
               onPressed: () async {
@@ -208,7 +208,7 @@ class ProfilePage extends StatelessWidget {
                   print('${activitytoday.elementAt(i)}');
                 }
               },
-              child: Text('Tap to download today activity data')),
+              child: const Text('Tap to download today activity data')),
           ElevatedButton(
             onPressed: () async {
               await FitbitConnector.unauthorize(
@@ -216,7 +216,7 @@ class ProfilePage extends StatelessWidget {
                 clientSecret: Strings.fitbitClientSecret,
               );
             },
-            child: Text('Tap to unauthorize'),
+            child: const Text('Tap to unauthorize'),
           ),
         ]),
       ),

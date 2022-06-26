@@ -1,17 +1,17 @@
 
 class Phases {
   final String? phase;
-  final int? time;
+  final double? time;
 
   Phases(this.phase, this.time);
 }
 
 List<Phases> getChartData(Sleep) {
   final List<Phases> chartData = [
-    Phases('deep', Sleep.deep),
-    Phases('rem', Sleep.rem),
-    Phases('wake', Sleep.wake),
-    Phases('light', Sleep.light),
+    Phases('deep', Sleep.deep/2),
+    Phases('rem', Sleep.rem/2),
+    Phases('wake', Sleep.wake/2),
+    Phases('light', Sleep.light/2),
   ];
   return chartData;
 }

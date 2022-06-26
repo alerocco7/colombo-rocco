@@ -1,8 +1,6 @@
 import 'package:colombo_rocco/database/entities/activity.dart';
 import 'package:colombo_rocco/database/entities/sleep.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +12,7 @@ class calendarPage extends StatefulWidget {
   //Meal instead.
 
   //MealPage constructor
-  calendarPage({Key? key}) : super(key: key);
+  const calendarPage({Key? key}) : super(key: key);
 
   static const route = '/calendarpage/';
   static const routeDisplayName = 'Calendar Page';
@@ -62,7 +60,7 @@ class _calendarPageState extends State<calendarPage> {
               builder: (context, snapshot) {
                 final data = snapshot.data as Sleep?;
                 if (data == null) {
-                  return Center(
+                  return const Center(
                       child: Text(
                           'In the selected day no sleep data were collected, please try to choose another day',
                           textScaleFactor: 1.5, textAlign: TextAlign.center) );
@@ -73,7 +71,7 @@ class _calendarPageState extends State<calendarPage> {
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('${DateFormat.yMMMMd().format(data.day)}'),
+                      Text(DateFormat.yMMMMd().format(data.day)),
                       Text('${data.deep}'),
                     ],
                   ));
@@ -91,7 +89,7 @@ class _calendarPageState extends State<calendarPage> {
               builder: (context, snapshot) {
                 final data = snapshot.data as Activity?;
                 if (data == null) {
-                  return Center(
+                  return const Center(
                       child: Text(
                           'In the selected day no activity data were collected, please try to choose another day',
                           textScaleFactor: 1.5, textAlign: TextAlign.center) );
@@ -129,10 +127,11 @@ class _calendarPageState extends State<calendarPage> {
         firstDate: DateTime(2010),
         lastDate: DateTime.now());
 
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+    }
     //Here, I'm using setState to update the _selectedDate field and rebuild the UI.
   }
 }
