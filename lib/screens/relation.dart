@@ -46,12 +46,12 @@ class RelationPage extends StatelessWidget {
                 ElevatedButton(
                 child: const Text('prova2'),
                 onPressed: () async {
-                  DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().subtract(const Duration(days: 2)).day);
+                  DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().add(const Duration(days: 1)).day);
                   Sleep? prova = await Provider.of<DatabaseRepository>(
                           context,
                           listen: false)
                       .findSleepByday(oggi) ;
-                      print(prova!.deep.toString());}),
+                      print(prova!.caloriesDaybefore.toString());}),
             ElevatedButton(
                 child: const Text('calorie'),
                 onPressed: () async {

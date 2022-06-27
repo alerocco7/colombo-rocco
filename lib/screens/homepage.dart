@@ -219,10 +219,11 @@ class _HomePageState extends State<HomePage> {
                                     isVisible: true,
                                     overflowMode: LegendItemOverflowMode.wrap,
                                     backgroundColor:
-                                        Color.fromARGB(255, 227, 255, 46),
+                                        Color.fromARGB(255, 144, 238, 229),
                                     textStyle: TextStyle(fontSize: 25),
                                     iconHeight: 30,
                                     iconWidth: 25),
+                                    palette: [Color.fromARGB(255, 6, 246, 218), Color.fromARGB(255, 3, 133, 247),Color.fromARGB(255, 3, 30, 234),Color.fromARGB(255, 0, 2, 92)],
                                 series: <CircularSeries>[
                                   PieSeries<Phases, String>(
                                       dataSource: chartData,
@@ -254,11 +255,13 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.pushNamed(context, '/calendarpage/');
                 }),
-            ElevatedButton(
-                child: const Text('To NotePage'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/notepage/');
-                }),
+            
+                ElevatedButton(
+              child: const Text('To Relation'),
+              onPressed: () {
+                Navigator.pushNamed(context, '/relation/');
+              }),
+
           ],
         ),
       ),

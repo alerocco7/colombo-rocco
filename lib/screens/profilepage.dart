@@ -21,11 +21,7 @@ class ProfilePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               }),
-          ElevatedButton(
-              child: const Text('To Relation'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/relation/');
-              }),
+          
           ElevatedButton(
             onPressed: () async {
               // Authorize the app
