@@ -3,6 +3,7 @@ import 'package:colombo_rocco/screens/homepage.dart';
 import 'package:colombo_rocco/screens/notepage.dart';
 import 'package:colombo_rocco/screens/prediction.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
+import 'package:colombo_rocco/screens/profilo.dart';
 import 'package:colombo_rocco/screens/register.dart';
 import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: new ThemeData(scaffoldBackgroundColor: Color.fromRGBO(108, 109, 107, 1)),
       //This specifies the app entrypoint
       initialRoute: '/login/',
       //This maps names to the set of routes within the app
@@ -50,6 +52,8 @@ class MyApp extends StatelessWidget {
         '/relation/': (context) => RelationPage(),
         '/prediction/': (context) => PredictionPage(),
         '/register/': (context) => MyRegister(),
+        '/profile': (context) => ProfileScreen(),
+
       },
     );
   } //build

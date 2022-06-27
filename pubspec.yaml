@@ -39,6 +39,7 @@ dependencies:
   floor: ^1.2.0
   provider: ^6.0.3
   syncfusion_flutter_charts: ^20.1.61
+  flutter_svg: ^0.22.0
 
 
 dev_dependencies:

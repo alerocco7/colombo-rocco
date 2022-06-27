@@ -44,7 +44,7 @@ class _calendarPageState extends State<calendarPage> {
     //The page is composed of a form. An action in the AppBar is used to validate and save the information provided by the user.
     //A FAB is showed to provide the "delete" functinality. It is showed only if the meal already exists.
     return Scaffold(
-      appBar: AppBar(title: Text(calendarPage.routeDisplayName)),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 167, 192, 3),title: Text(calendarPage.routeDisplayName,style: TextStyle(color: Color.fromARGB(255,6,6,6)),)),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Consumer<DatabaseRepository>(builder: (context, dbr, child) {
           //The logic is to query the DB for the entire list of Todo using dbr.findAllTodos()
@@ -73,6 +73,7 @@ class _calendarPageState extends State<calendarPage> {
                     .findSleepByday(_selectedDate);
           },
           child: const Text('SELECT THE DAY'),
+          style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
         ) //else
       ]
           //   child: ElevatedButton(

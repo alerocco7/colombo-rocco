@@ -13,20 +13,23 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Profile Page')),
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 167, 192, 3),title: Text('Profile Page',style: TextStyle(color: Color.fromARGB(255, 6, 6, 6)),)),
       body: Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
               child: Text('To Homepage'),
+              style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
               onPressed: () {
                 Navigator.pop(context);
               }),
           ElevatedButton(
               child: Text('To Relation'),
+              style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
               onPressed: () {
                 Navigator.pushNamed(context, '/relation/');
               }),
           ElevatedButton(
+            style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
             onPressed: () async {
               // Authorize the app
               String? userId = await FitbitConnector.authorize(
@@ -73,6 +76,7 @@ class ProfilePage extends StatelessWidget {
             child: Text('Tap to download calories data'),
           ),
           ElevatedButton(
+            style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
             onPressed: () async {
               // Authorize the app
               String? userId = await FitbitConnector.authorize(
@@ -133,6 +137,7 @@ class ProfilePage extends StatelessWidget {
             child: Text('Tap to download 100 days sleep data'),
           ),
           ElevatedButton(
+            style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
             onPressed: () async {
               // Authorize the app
               String? userId = await FitbitConnector.authorize(
@@ -182,6 +187,7 @@ class ProfilePage extends StatelessWidget {
             child: Text('Tap to download today sleep data'),
           ),
           ElevatedButton(
+            style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
             onPressed: () async {
               await FitbitConnector.unauthorize(
                 clientID: Strings.fitbitClientID,

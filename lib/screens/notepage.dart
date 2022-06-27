@@ -10,7 +10,7 @@ class NotePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Note Page')),
+     appBar: AppBar(backgroundColor: Color.fromARGB(255, 167, 192, 3),title: Text('Note Page',style: TextStyle(color: Color.fromARGB(255, 6, 6, 6)),)),
       body: Center(child: Consumer<DatabaseRepository>(
         builder: (context, dbr, child) {
           return FutureBuilder(

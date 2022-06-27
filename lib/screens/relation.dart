@@ -8,17 +8,19 @@ class RelationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Relation Page')),
+        appBar: AppBar(backgroundColor: Color.fromARGB(255, 167, 192, 3),title: Text('Relation Page',style: TextStyle(color: Color.fromARGB(255, 6, 6, 6)),)),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             ElevatedButton(
               child: Text('To ProfilePage'),
+              style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             ElevatedButton(
                 child: Text('prova'),
+                style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
                 onPressed: () async {
                   DateTime day =
                       DateTime.now().subtract(const Duration(days: 30));
@@ -45,6 +47,7 @@ class RelationPage extends StatelessWidget {
                 }),
                 ElevatedButton(
                 child: Text('prova2'),
+                style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
                 onPressed: () async {
                   DateTime oggi = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().subtract(Duration(days: 2)).day);
                   Sleep? prova = await Provider.of<DatabaseRepository>(
@@ -54,6 +57,7 @@ class RelationPage extends StatelessWidget {
                       print(prova!.deep.toString());}),
             ElevatedButton(
                 child: Text('calorie'),
+                style: ButtonStyle( backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 34, 34, 34)),),
                 onPressed: () async {
                   DateTime day =
                       DateTime.now().subtract(const Duration(days: 30));
