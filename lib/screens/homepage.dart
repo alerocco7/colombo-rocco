@@ -217,6 +217,11 @@ class _HomePageState extends State<HomePage> {
                         ]);
                       } else {
                         chartData = getChartData(data.last);
+                        double tot = data.last.deep!.toDouble() +
+                            data.last.rem!.toDouble() +
+                            data.last.wake!.toDouble() +
+                            data.last.light!.toDouble();
+
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -280,7 +285,8 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 child: const Text('To Relation'),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/relation/');
+                  Navigator.pushNamed(context, '/relation/',
+                      arguments: parametri);
                 }),
           ],
         ),

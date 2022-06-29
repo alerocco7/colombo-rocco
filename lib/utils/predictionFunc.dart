@@ -45,7 +45,7 @@ double predictionFunc(double? calorie, double a, double b) {
 
 double sleepEfficiency(Sleep? sleep) {
   return sleep!.deep! /
-      (sleep.deep! +
+      (    sleep.deep! +
           sleep.rem!.toDouble() +
           sleep.light!.toDouble() +
           sleep.wake!.toDouble());

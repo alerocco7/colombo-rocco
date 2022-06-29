@@ -90,10 +90,10 @@ class _calendarPageState extends State<calendarPage> {
                   ]);
                 } else {
                   sleepEff = sleepEfficiency(data);
-                  sleepEff = 100*(sleepEff-parametri.elementAt(2))/parametri.elementAt(2);
-                  double sleepEffpred = predictionFunc(data.caloriesDaybefore,
+                  double sleepEffoverMean = 100*(sleepEff-parametri.elementAt(2))/parametri.elementAt(2);
+                  double sleepEffpredoverMean = predictionFunc(data.caloriesDaybefore,
                     parametri.elementAt(0), parametri.elementAt(1));
-                    sleepEffpred =  100*(sleepEffpred-parametri.elementAt(2))/parametri.elementAt(2);
+                    sleepEffpredoverMean =  100*(sleepEffpredoverMean-parametri.elementAt(2))/parametri.elementAt(2);
                   return Center(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -103,8 +103,8 @@ class _calendarPageState extends State<calendarPage> {
                       Text(DateFormat.yMMMMd().format(data.day)),
                       Text('${data.deep}'),
                       Text('${data.caloriesDaybefore}'),
-                      Text('Real sleep efficiency: $sleepEff %'),
-                      Text('Predicted sleep efficiency $sleepEffpred %'),
+                      Text('Real sleep efficiency: $sleepEffoverMean %'),
+                      Text('Predicted sleep efficiency $sleepEffpredoverMean %'),
                       ElevatedButton(
                         onPressed: () async {
                           _selectDate(context);
