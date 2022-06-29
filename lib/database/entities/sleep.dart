@@ -13,6 +13,8 @@ class Sleep {
   final int? rem;
   final int? wake;
   final double? caloriesDaybefore;
+
+  var last;
   //Default constructor
   Sleep(this.day, this.deep, this.light, this.rem, this.wake, this.caloriesDaybefore);
 }//Sleep

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../utils/phases.dart';
 
 //This is the class that implement the page to be used to edit existing meals and add new meals.
 //This is a StatefulWidget since it needs to rebuild when the form fields change.
@@ -27,6 +30,7 @@ class _calendarPageState extends State<calendarPage> {
 
   Sleep? sleepdata;
   Activity? activitydata;
+  
 
   @override
   void initState() {
@@ -65,6 +69,7 @@ class _calendarPageState extends State<calendarPage> {
                           'In the selected day no sleep data were collected, please try to choose another day',
                           textScaleFactor: 1.5, textAlign: TextAlign.center) );
                 } else {
+                  var chartData = getChartData(data);
                   return Center(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -73,6 +78,30 @@ class _calendarPageState extends State<calendarPage> {
                     children: [
                       Text(DateFormat.yMMMMd().format(data.day)),
                       Text('${data.deep}'),
+                      SfCircularChart(
+                                title: ChartTitle(
+                                    text:
+                                        'How you slept last night                                   (minutes spent in each phases)',backgroundColor: Color.fromARGB(255, 198, 197, 197)),
+                                legend: Legend(
+                                    isVisible: true,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    backgroundColor:
+                                         Color.fromARGB(255, 155, 202, 243),
+                                    textStyle: TextStyle(fontSize: 25),
+                                    iconHeight: 30,
+                                    iconWidth: 25),
+                                    palette: [Color.fromARGB(255, 70, 160, 239), Color.fromARGB(255, 23, 137, 237),Color.fromARGB(255, 3, 83, 154),Color.fromARGB(255, 1, 56, 105)],
+                                series: <CircularSeries>[
+                                  PieSeries<Phases, String>(
+                                      dataSource: chartData,
+                                      xValueMapper: (Phases data, _) =>
+                                          data.phase,
+                                      yValueMapper: (Phases data, _) =>
+                                          data.time,
+                                      dataLabelSettings:
+                                          const DataLabelSettings(
+                                              isVisible: true)),
+                                ]),
                     ],
                   ));
                 }

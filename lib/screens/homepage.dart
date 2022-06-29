@@ -1,6 +1,7 @@
 import 'package:colombo_rocco/database/entities/activity.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:colombo_rocco/database/entities/sleep.dart';
@@ -35,24 +36,82 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('HomePage'), actions: <Widget>[
+      appBar: AppBar(backgroundColor: Color.fromARGB(255, 167, 192, 3),title: Text('HomePage',style: TextStyle(color: Color.fromARGB(255, 6, 6, 6))), actions: <Widget>[
         IconButton(
-          icon: const Icon(Icons.logout),
+          icon: const Icon(Icons.logout,color: Color.fromARGB(255, 6, 6, 6)),
           tooltip: 'Logout',
           onPressed: () {
             logout(context);
           },
         ),
       ]),
+      drawer: Drawer(
+        backgroundColor: Color.fromRGBO(108, 109, 107, 1),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 167, 192, 3),
+              ),
+              child:
+                Text('Choose a page',style: TextStyle(fontSize: 27,fontStyle: FontStyle.italic),),
+                 
+            ),
+            ListTile(
+              leading: Icon(Icons.account_box),
+              title: Text('To ProfilePage',style: TextStyle(fontSize: 20,fontStyle: FontStyle.italic)),
+              onTap: () {
+                  Navigator.pushNamed(context, '/profilepage/');
+              }
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_month),
+              title: Text('To CalendarPage',style: TextStyle(fontSize: 20,fontStyle: FontStyle.italic)),
+              onTap: () {
+                  Navigator.pushNamed(context, '/calendarpage/');
+              }
+            ),
+             ListTile(
+              leading: Icon(Icons.graphic_eq_sharp),
+              title: Text('To RelationPage',style: TextStyle(fontSize: 20,fontStyle: FontStyle.italic)),
+              onTap: () {
+                  Navigator.pushNamed(context, '/relation/');
+              }
+            ),
+          ],
+        ),
+       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text('Welcome back',
-                style: TextStyle(
-                    fontStyle: FontStyle.normal,
-                    fontSize: 30,
-                    color: Color.fromARGB(255, 1, 63, 199))),
+            SizedBox( height: 15),
+            Stack(
+              children: <Widget>[
+                Text(
+                    'AppredicT',
+                  style: TextStyle(
+                    fontSize: 60,
+                    foreground: Paint()
+                      ..style=PaintingStyle.stroke
+                      ..strokeWidth=8 
+                      ..color= Color.fromARGB(255, 167, 192, 3)!,
+                  ),
+                ),
+                Text(
+                   'AppredicT',
+                  style:TextStyle( 
+                    fontSize:60,
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox( height: 20),
+
             Consumer<DatabaseRepository>(builder: (context, dbr, child) {
               return FutureBuilder(
                   initialData: null,
@@ -66,8 +125,16 @@ class _HomePageState extends State<HomePage> {
                         //in first access, database is empty || at the first daily access, you must update your data
 
                         return Column(children: [
-                          const Text('Update your data to proceed'),
-                          ElevatedButton(onPressed: () async {
+                          SizedBox( height: 140),
+                          const Text('Update your data to proceed',style: TextStyle(color: Color.fromARGB(255, 6, 6, 6),fontSize: 20,fontStyle: FontStyle.italic)),
+                          SizedBox( height: 13),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color.fromARGB(185, 6, 6, 6),
+                              fixedSize: const Size(200, 50),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(35))),
+                            onPressed: () async {
                             // Authorize the app
                             String? userId = await FitbitConnector.authorize(
                                 context: context,
@@ -197,33 +264,58 @@ class _HomePageState extends State<HomePage> {
 
                              
                             } },
-                            child: Text('Update your data')
+                            child: Text('Update')
                          )
                         ]);
                       } else {
                         chartData = getChartData(data.last);
+                        int tot=(data.last!.deep!.toDouble()+data.last!.rem!.toDouble()+data.last!.light!.toDouble()+data.last!.wake!.toDouble()).round();
+                        int deep_perc=((data.last!.deep!.toDouble()/(tot))*100).round();
+                        int rem_perc=(data.last!.rem!.toDouble()/(tot)*100).round();
+                        int light_perc=(data.last!.light!.toDouble()/(tot)*100).round();
+                        int wake_perc=(data.last!.wake!.toDouble()/(tot)*100).round();
+                        double top_deep= 180;
+                        int eff= (data.last!.deep!.toDouble()/(2)/(top_deep)*100).round();
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Yesterday you spent ' + data.last!.caloriesDaybefore.toString()),
-                            Text('Date:' + data.last!.day.toString()),
-                            Text('Deep(min): ' + data.last!.deep.toString()),
-                            Text('Rem(min): ' + data.last!.rem.toString()),
-                            Text('Light(min): ' + data.last!.light.toString()),
-                            Text('Wake(min): ' + data.last!.wake.toString()),
+                          Text('Date: ' + DateFormat.yMMMMd().format(data.last!.day),style: TextStyle(fontSize: 18,color:Color.fromARGB(255, 255, 255, 255),fontStyle: FontStyle.italic)),
+                          SizedBox( height: 25),
+                          Text('Here some data for you...',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 6, 6, 6))),
+                            SizedBox( height: 15),
+                            Text('Yesterday you spent ' + data.last!.caloriesDaybefore.toString()+ ' calories',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic),),                           
+                            SizedBox( height: 5),
+                            Text('- Deep sleep: ' + deep_perc.toString() + ' % of you rest',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic)),
+                            SizedBox( height: 5),
+                            Text('- Rem sleep: ' + rem_perc.toString() + ' % of your rest',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic)),
+                            SizedBox( height: 5),
+                            Text('- Light sleep: ' + light_perc.toString() + ' % of your rest',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic)),
+                            SizedBox( height: 5),
+                            Text('- Wake sleep: ' + wake_perc.toString() + ' % of your rest',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic)),
+                            SizedBox( height: 5),
+                            Text('EFFICENCY: ' + eff.toString()+ '/100',style: TextStyle(fontSize: 18,fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 15,
+                            ),
+
                             SfCircularChart(
                                 title: ChartTitle(
                                     text:
-                                        'Minutes spent in each phases last night'),
+                                        'How you slept last night                                   (minutes spent in each phases)',backgroundColor: Color.fromARGB(255, 198, 197, 197)),
                                 legend: Legend(
                                     isVisible: true,
                                     overflowMode: LegendItemOverflowMode.wrap,
                                     backgroundColor:
-                                        Color.fromARGB(255, 144, 238, 229),
+                                         Color.fromARGB(255, 155, 202, 243),
                                     textStyle: TextStyle(fontSize: 25),
                                     iconHeight: 30,
                                     iconWidth: 25),
-                                    palette: [Color.fromARGB(255, 6, 246, 218), Color.fromARGB(255, 3, 133, 247),Color.fromARGB(255, 3, 30, 234),Color.fromARGB(255, 0, 2, 92)],
+                                    palette: [Color.fromARGB(255, 70, 160, 239), Color.fromARGB(255, 23, 137, 237),Color.fromARGB(255, 3, 83, 154),Color.fromARGB(255, 1, 56, 105)],
                                 series: <CircularSeries>[
                                   PieSeries<Phases, String>(
                                       dataSource: chartData,
@@ -245,22 +337,6 @@ class _HomePageState extends State<HomePage> {
                     }
                   });
             }),
-            ElevatedButton(
-                child: const Text('To ProfilePage'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profilepage/');
-                }),
-            ElevatedButton(
-                child: const Text('To CalendarPage'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/calendarpage/');
-                }),
-            
-                ElevatedButton(
-              child: const Text('To Relation'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/relation/');
-              }),
 
           ],
         ),
