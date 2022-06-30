@@ -181,7 +181,7 @@ class _calendarPageState extends State<calendarPage> {
                         color: Color.fromARGB(255, 167, 192, 3),
                         child: Column(children: [
                           Text(
-                              'In ${DateFormat.yMMMMd().format(_selectedDate)} you slept $oreTot hour ${minuti.round()} minutes.',
+                              'In ${DateFormat.yMMMMd().format(_selectedDate)} you slept $oreTot hours ${minuti.round()} minutes.',
                               style: TextStyle(
                                   fontSize: 18,
                                   fontStyle: FontStyle.italic,

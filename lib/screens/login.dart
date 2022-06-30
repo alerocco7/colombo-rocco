@@ -147,7 +147,7 @@ class _MyLoginState extends State<MyLogin> {
                                           ..removeCurrentSnackBar()
                                           ..showSnackBar(const SnackBar(
                                               content: Text(
-                                                  'Username o password errate')));
+                                                  'Wrong credentials')));
                                       }
                                     },
                                     icon: const Icon(

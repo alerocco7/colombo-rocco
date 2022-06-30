@@ -362,7 +362,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                       'Tonight you slept: ' +
                                           oreTot.toString() +
-                                          ' hour ${minuti.round()} minutes',
+                                          ' hours ${minuti.round()} minutes',
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontStyle: FontStyle.italic,
@@ -371,7 +371,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                       '- Deep sleep: ' +
                                           deep_perc.toString() +
-                                          ' % of you rest',
+                                          ' % of your rest',
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontStyle: FontStyle.italic,
@@ -438,7 +438,7 @@ class _HomePageState extends State<HomePage> {
                                     iconHeight: 25,
                                     iconWidth: 25),
                                 palette: [
-                                  Color.fromARGB(255, 70, 160, 239),
+                                  Color.fromARGB(255, 148, 205, 255),
                                   Color.fromARGB(255, 23, 137, 237),
                                   Color.fromARGB(255, 3, 83, 154),
                                   Color.fromARGB(255, 1, 56, 105)
