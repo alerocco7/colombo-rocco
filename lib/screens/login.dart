@@ -35,8 +35,8 @@ class _MyLoginState extends State<MyLogin> {
     Navigator.of(context).pushReplacementNamed('/homepage/');
   } //_toHomePage
 
-  //When the correct username and password are entered, 
-  //it set the SharedPreference instance 
+  //When the correct username and password are entered,
+  //it set the SharedPreference instance
   //and push to the homepage
   void _login() async {
     final sp = await SharedPreferences.getInstance();
@@ -59,16 +59,21 @@ class _MyLoginState extends State<MyLogin> {
             Container(
               padding: const EdgeInsets.only(left: 10, top: 60),
               child: const Text(
-    "AppredicT",
-    style: TextStyle(
-        fontSize: 53,
-        color: Color.fromARGB(255, 249, 248, 248),
-        shadows: [
-          Shadow(color: Color.fromARGB(255, 6, 6, 6), offset: Offset(3, 13), blurRadius: 1),
-          Shadow(color: Color.fromARGB(255, 164, 162, 162), offset: Offset(2, 2), blurRadius: 2)
-        ]
-    ),
-  ),
+                "AppredicT",
+                style: TextStyle(
+                    fontSize: 53,
+                    color: Color.fromARGB(255, 249, 248, 248),
+                    shadows: [
+                      Shadow(
+                          color: Color.fromARGB(255, 6, 6, 6),
+                          offset: Offset(3, 13),
+                          blurRadius: 1),
+                      Shadow(
+                          color: Color.fromARGB(255, 164, 162, 162),
+                          offset: Offset(2, 2),
+                          blurRadius: 2)
+                    ]),
+              ),
             ),
             SingleChildScrollView(
               child: Container(
@@ -83,9 +88,12 @@ class _MyLoginState extends State<MyLogin> {
                         children: [
                           Text(
                             'Welcome',
-                            style: TextStyle(color: Color.fromARGB(255, 7, 7, 7), fontSize: 33,fontStyle: FontStyle.italic),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 7, 7, 7),
+                                fontSize: 33,
+                                fontStyle: FontStyle.italic),
                           ),
-                          SizedBox( height: 30),
+                          SizedBox(height: 30),
                           TextField(
                             controller: username,
                             style: const TextStyle(color: Colors.black),
@@ -121,7 +129,9 @@ class _MyLoginState extends State<MyLogin> {
                               const Text(
                                 'Sign in',
                                 style: TextStyle(
-                                    fontSize: 27, fontWeight: FontWeight.w700,fontStyle: FontStyle.italic),
+                                    fontSize: 27,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.italic),
                               ),
                               CircleAvatar(
                                 radius: 30,
@@ -130,7 +140,7 @@ class _MyLoginState extends State<MyLogin> {
                                     color: Colors.white,
                                     onPressed: () {
                                       if (username.text == 'user' &&
-                                          password.text == 'strong') {
+                                          password.text == 'bwthw22') {
                                         _login();
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -149,7 +159,6 @@ class _MyLoginState extends State<MyLogin> {
                           const SizedBox(
                             height: 40,
                           ),
-  
                         ],
                       ),
                     )
