@@ -444,7 +444,9 @@ class _HomePageState extends State<HomePage> {
                                   Color.fromARGB(255, 1, 56, 105)
                                 ],
                                 series: <CircularSeries>[
-                                  PieSeries<Phases, String>(
+                                  RadialBarSeries<Phases, String>(
+                                    maximumValue: 370,
+                                    trackColor: Color.fromARGB(255, 61, 74, 83),
                                       dataSource: chartData,
                                       xValueMapper: (Phases data, _) =>
                                           data.phase,
