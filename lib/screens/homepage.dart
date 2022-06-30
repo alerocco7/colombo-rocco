@@ -1,4 +1,3 @@
-import 'package:colombo_rocco/database/entities/activity.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:colombo_rocco/utils/predictionFunc.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //SharedPreferences method to persist username and password
   void logout(BuildContext context) async {
     final sp = await SharedPreferences.getInstance();
     sp.remove('username');
@@ -27,12 +27,13 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushReplacementNamed('/login/');
   }
 
+  //CircularChart data initialization
   late List<Phases> chartData;
- 
+
   @override
   void initState() {
-    chartData = getChartData(Sleep(DateTime.now(), 10, 20, 30, 40, 0));
-    
+    chartData = getChartData(Sleep(
+        DateTime.now(), 10, 20, 30, 40, 0)); //initialization with random values
     super.initState();
   }
 
@@ -59,17 +60,30 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 167, 192, 3),
-              ),
-              child: Text(
-                'Choose a page',
-                style: TextStyle(fontSize: 27, fontStyle: FontStyle.italic),
-              ),
-            ),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 167, 192, 3),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Choose',
+                      style: TextStyle(
+                        fontSize: 40,
+                      ),
+                    ),
+                    Text(
+                      'a page',
+                      style: TextStyle(
+                        fontSize: 40,
+                      ),
+                    ),
+                  ],
+                )),
             ListTile(
                 leading: Icon(Icons.account_box),
-                title: Text('To ProfilePage',
+                title: Text('Your profile',
                     style:
                         TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
                 onTap: () {
@@ -77,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                 }),
             ListTile(
                 leading: Icon(Icons.calendar_month),
-                title: Text('To CalendarPage',
+                title: Text('Calendar archive',
                     style:
                         TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
                 onTap: () {
@@ -85,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 }),
             ListTile(
                 leading: Icon(Icons.graphic_eq_sharp),
-                title: Text('To RelationPage',
+                title: Text('Calories & sleep efficiency relation',
                     style:
                         TextStyle(fontSize: 20, fontStyle: FontStyle.italic)),
                 onTap: () {
@@ -130,9 +144,7 @@ class _HomePageState extends State<HomePage> {
                       final data = snapshot.data as List<Sleep?>;
                       final today = DateTime(DateTime.now().year,
                           DateTime.now().month, DateTime.now().day);
-                      if (data.isEmpty || data.last!.day != today) {
-                        //in first access, database is empty || at the first daily access, you must update your data
-
+                      if (data.isEmpty || data.last!.day != today) { //in first access, database is empty || at the first daily access, you must update your data
                         return Column(children: [
                           SizedBox(height: 140),
                           const Text('Update your data to proceed',
@@ -198,18 +210,14 @@ class _HomePageState extends State<HomePage> {
                                       fitbitActivityTimeseriesDataManager.type,
                                 )) as List<FitbitActivityTimeseriesData>;
 
-                                print(caloriesData.last);
-                                print(caloriesData
-                                    .elementAt(caloriesData.length - 2));
-                                print(sleepData.elementAt(0));
-                                print(sleepData.elementAt(1));
-
+                                //variables initialization
                                 DateTime? date = today;
                                 int deepCount = 0;
                                 int remCount = 0;
                                 int wakeCount = 0;
                                 int lightCount = 0;
-
+                                
+                                //database filling with the last data (if calories are present and sleep data not yet)
                                 for (var j = 0;
                                     j < caloriesData.length - 1;
                                     j++) {
@@ -230,6 +238,14 @@ class _HomePageState extends State<HomePage> {
                                         .insertSleepStages(soloCalorie);
                                     break;
                                   }
+
+                                  //database filling, we have two lists (sleepData and caloriesData), 
+                                  //the first for cycle counts the sleep phases,
+                                  //whenever the day changes the other for cycle 
+                                  //look for the corresponding Calories value (of the day before)
+                                  //and breaks when it founds it.
+                                  //Then the Sleep object is created and inserted in the database.
+                                  //After this the counters are updated and the next day is considered
 
                                   for (var i = 0;
                                       i < sleepData.length - 1;
@@ -282,6 +298,8 @@ class _HomePageState extends State<HomePage> {
                                       lightCount = 0;
                                     }
                                   }
+                                  //there are some wrong data fetched, where all the phases are 0
+                                  //we descard it
                                   await Provider.of<DatabaseRepository>(context,
                                           listen: false)
                                       .deleteNotSleeping();
@@ -289,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text('Update'))
                         ]);
-                      } else {
+                      } else { //when data are updated, the page is filled with some data visualization and a circular chart
                         chartData = getChartData(data.last);
                         int tot = (data.last!.deep!.toDouble() +
                                 data.last!.rem!.toDouble() +
@@ -312,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                         double eff = sleepEfficiency(data.last);
                         List<double> parametri = predictionPar(
                             data); //List with linear prediction parameters(i=0,1) and sleepEffMean(i=2)
-                        
+
                         double SleepEffMean = parametri.elementAt(2);
                         double sleepEffresp2Mean =
                             sleepEfficiency(data.last) - SleepEffMean;
@@ -451,9 +469,9 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
 }
 
+//Based on the different input (positiv or negative) this function returns two different Text Widgets
 Widget _printEff2mean(double sleepEffresp2Mean) {
   if (sleepEffresp2Mean > 0) {
     return Text(

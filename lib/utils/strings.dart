@@ -1,3 +1,5 @@
+//Credentials obtained after app registration 
+
 class Strings {
   // Fitbit Client ID (replace XXX with your client ID)
   static const String fitbitClientID = '238L38';

@@ -1,8 +1,6 @@
 import 'package:colombo_rocco/screens/calendarpage.dart';
 import 'package:colombo_rocco/screens/homepage.dart';
-import 'package:colombo_rocco/screens/prediction.dart';
 import 'package:colombo_rocco/screens/profilepage.dart';
-import 'package:colombo_rocco/screens/register.dart';
 import 'package:colombo_rocco/screens/relation.dart';
 import 'package:flutter/material.dart';
 import 'package:colombo_rocco/screens/login.dart';
@@ -10,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:colombo_rocco/database/database.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 
-// We modified the main
+
 Future<void> main() async {
   //This is a special method that use WidgetFlutterBinding to interact with the Flutter engine.
   //This is needed when you need to interact with the native core of the app.
@@ -45,11 +43,8 @@ class MyApp extends StatelessWidget {
         '/login/': (context) => const MyLogin(),
         '/homepage/': (context) => HomePage(),
         '/profilepage/': (context) => ProfilePage(),
-        
         '/calendarpage/': (context) => const calendarPage(),
         '/relation/': (context) => RelationPage(),
-        '/prediction/': (context) => PredictionPage(),
-        '/register/': (context) => const MyRegister(),
       },
     );
   } //build

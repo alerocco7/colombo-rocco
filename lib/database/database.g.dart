@@ -61,8 +61,6 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  ActivityDao? _activityDaoInstance;
-
   SleepDao? _sleepDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
@@ -84,8 +82,6 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Activity` (`day` INTEGER NOT NULL, `calories` REAL NOT NULL, PRIMARY KEY (`day`))');
-        await database.execute(
             'CREATE TABLE IF NOT EXISTS `Sleep` (`day` INTEGER NOT NULL, `deep` INTEGER, `light` INTEGER, `rem` INTEGER, `wake` INTEGER, `caloriesDaybefore` REAL, PRIMARY KEY (`day`))');
 
         await callback?.onCreate?.call(database, version);
@@ -95,86 +91,8 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  ActivityDao get activityDao {
-    return _activityDaoInstance ??= _$ActivityDao(database, changeListener);
-  }
-
-  @override
   SleepDao get sleepDao {
     return _sleepDaoInstance ??= _$SleepDao(database, changeListener);
-  }
-}
-
-class _$ActivityDao extends ActivityDao {
-  _$ActivityDao(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database),
-        _activityInsertionAdapter = InsertionAdapter(
-            database,
-            'Activity',
-            (Activity item) => <String, Object?>{
-                  'day': _dateTimeConverter.encode(item.day),
-                  'calories': item.calories
-                }),
-        _activityDeletionAdapter = DeletionAdapter(
-            database,
-            'Activity',
-            ['day'],
-            (Activity item) => <String, Object?>{
-                  'day': _dateTimeConverter.encode(item.day),
-                  'calories': item.calories
-                });
-
-  final sqflite.DatabaseExecutor database;
-
-  final StreamController<String> changeListener;
-
-  final QueryAdapter _queryAdapter;
-
-  final InsertionAdapter<Activity> _activityInsertionAdapter;
-
-  final DeletionAdapter<Activity> _activityDeletionAdapter;
-
-  @override
-  Future<List<Activity>> findAllSteps() async {
-    return _queryAdapter.queryList('SELECT * FROM Activity',
-        mapper: (Map<String, Object?> row) => Activity(
-            _dateTimeConverter.decode(row['day'] as int),
-            row['calories'] as double));
-  }
-
-  @override
-  Future<List<Activity?>> findCaloriesByfirstday(DateTime day) async {
-    return _queryAdapter.queryList('SELECT * FROM Activity WHERE day > ?1',
-        mapper: (Map<String, Object?> row) => Activity(
-            _dateTimeConverter.decode(row['day'] as int),
-            row['calories'] as double),
-        arguments: [_dateTimeConverter.encode(day)]);
-  }
-
-  @override
-  Future<List<double?>?> findCalorieByfirstday(DateTime day) async {
-    await _queryAdapter.queryNoReturn(
-        'SELECT calories FROM Activity WHERE day > ?1',
-        arguments: [_dateTimeConverter.encode(day)]);
-  }
-
-  @override
-  Future<Activity?> findActivityByday(DateTime day) async {
-    return _queryAdapter.query('SELECT * FROM activity WHERE day = ?1',
-        mapper: (Map<String, Object?> row) => Activity(
-            _dateTimeConverter.decode(row['day'] as int),
-            row['calories'] as double),
-        arguments: [_dateTimeConverter.encode(day)]);
-  }
-
-  @override
-  Future<void> insertActivity(Activity calories) async {
-    await _activityInsertionAdapter.insert(calories, OnConflictStrategy.ignore);
-  }
-
-  @override
-  Future<void> deleteActivity(Activity calories) async {
-    await _activityDeletionAdapter.delete(calories);
   }
 }
 

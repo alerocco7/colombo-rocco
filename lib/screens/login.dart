@@ -20,11 +20,13 @@ class _MyLoginState extends State<MyLogin> {
     _checkLogin();
   }
 
+  //Functions useful for the Login page
+
   void _checkLogin() async {
     //Get the SharedPreference instance and check if the value of the 'username' filed is set or not
     final sp = await SharedPreferences.getInstance();
     if (sp.getString('username') != null) {
-      //If 'username is set, push the HomePage
+      //If username is set, push the HomePage
       _toHomePage(context);
     } //if
   } //_checkLogin
@@ -33,6 +35,9 @@ class _MyLoginState extends State<MyLogin> {
     Navigator.of(context).pushReplacementNamed('/homepage/');
   } //_toHomePage
 
+  //When the correct username and password are entered, 
+  //it set the SharedPreference instance 
+  //and push to the homepage
   void _login() async {
     final sp = await SharedPreferences.getInstance();
     sp.setString('username', username.text);

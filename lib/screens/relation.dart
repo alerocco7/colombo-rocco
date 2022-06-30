@@ -1,11 +1,10 @@
-import 'package:colombo_rocco/database/entities/activity.dart';
 import 'package:colombo_rocco/database/entities/sleep.dart';
 import 'package:colombo_rocco/utils/predictionFunc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:colombo_rocco/repository/databaseRepository.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'dart:math';
+
 
 class RelationPage extends StatefulWidget {
   @override
@@ -18,10 +17,11 @@ class _RelationPageState extends State<RelationPage> {
   @override
   void initState() {
     chartData =
-        getChartData([Sleep(DateTime.now(), 10, 20, 30, 40, 0)], [0, 1]);
+        getChartData([Sleep(DateTime.now(), 10, 20, 30, 40, 0)], [0, 1]); //data inizialitazion with random values
     super.initState();
   }
 
+  //Scatter chart representing the relation between calories and sleep efficiency(real and predicted) 
   @override
   Widget build(BuildContext context) {
    
@@ -61,25 +61,35 @@ class _RelationPageState extends State<RelationPage> {
                 primaryXAxis: NumericAxis(
                   minimum: mincal,
                   maximum: (maxcal!+100),
+                 
                   title: AxisTitle(
-                      text: 'spent calories',
+
+                      text: '____spent calories (kcal)____',
                       textStyle: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.black,
                           backgroundColor: Color.fromARGB(255, 167, 192, 3),
                           fontSize: 20)),
                   labelIntersectAction: AxisLabelIntersectAction.hide,
                   majorGridLines: const MajorGridLines(width: 0),
+                  labelStyle: TextStyle(fontSize: 15,fontWeight: FontWeight.w400, color: Colors.black),
                 ),
                 legend: Legend(isVisible: false),
                 primaryYAxis: NumericAxis(
+                 minimum: 10,
+                 maximum: 100,
                     title: AxisTitle(
                         text:
-                            'sleep efficiency vs sleep efficiency prediction',
+                            '_____sleep efficiency vs sleep efficiency prediction____',
                             textStyle: TextStyle(
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black,
                           backgroundColor: Color.fromARGB(255, 167, 192, 3),
                           fontSize: 20)),
-                    labelFormat: '{value}%',
+                    labelFormat: '{value}%', 
+                    labelStyle: TextStyle(fontSize: 15,fontWeight: FontWeight.w400, color: Colors.black),
                     axisLine: const AxisLine(width: 0),
-                    majorTickLines: const MajorTickLines(size: 0)),
+                    majorTickLines: const MajorTickLines(size: 10)),
                 tooltipBehavior: TooltipBehavior(
                     enable: true, header: '', canShowMarker: false),
                 series: <ScatterSeries<SalesData, num>>[
@@ -89,9 +99,10 @@ class _RelationPageState extends State<RelationPage> {
                           chartdata.calorie,
                       yValueMapper: (SalesData data, _) => data.timeEff,
                       markerSettings: const MarkerSettings(
+                         
                           width: 15,
                           height: 15,
-                          shape: DataMarkerType.triangle),
+                          shape: DataMarkerType.diamond),
                       name: 'time efficiency'),
                   ScatterSeries<SalesData, num>(
                       dataSource: chartData,
@@ -99,7 +110,7 @@ class _RelationPageState extends State<RelationPage> {
                           chartdata.calorie,
                       yValueMapper: (SalesData data, _) => data.timeEffpred,
                       markerSettings: const MarkerSettings(
-                          width: 5, height: 5, shape: DataMarkerType.circle),
+                          width: 10, height: 5, shape: DataMarkerType.circle),
                       name: 'time efficiency predicted')
                 ],
               ));
@@ -125,6 +136,7 @@ class _RelationPageState extends State<RelationPage> {
   }
 }
 
+//Useful class for manage data for the chart
 class SalesData {
   final double? calorie;
   final double timeEff;
